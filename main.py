@@ -54,8 +54,18 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
     :param num_classes: Number of classes to classify
     :return: The Tensor for the last layer of output
     """
-    # TODO: Implement function
-    return None
+    conv7_1x1 = tf.layers.conv2d(vgg_layer7_out, num_classes, 1, strides=(1,1))
+    conv4_1x1 = tf.layers.conv2d(vgg_layer7_out, num_classes, 1, strides=(1,1))
+    conv3_1x1 = tf.layers.conv2d(vgg_layer7_out, num_classes, 1, strides=(1,1))
+
+    deconv_output_1 = tf.layers.conv2d_transpose(conv7_1x1, num_classes, 4, strides=(2, 2))
+    skip_1 = tf.add(deconv_output_1, conv4_1x1)
+
+    deconv_output_2 = tf.layers.conv2d_transpose(skip_1, num_classes, 4, strides=(2, 2))
+    skip_2 = tf.add(deconv_output_2, conv3_1x1)
+
+    deconv_output_3 = tf.layers.conv2d_transpose(skip_2, num_classes, 16, strides=(8, 8))
+    return deconv_output_3
 tests.test_layers(layers)
 
 
@@ -99,7 +109,7 @@ def run():
     data_dir = './data'
     runs_dir = './runs'
     tests.test_for_kitti_dataset(data_dir)
-
+           
     # Download pretrained vgg model
     helper.maybe_download_pretrained_vgg(data_dir)
 
