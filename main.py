@@ -54,17 +54,17 @@ def layers(vgg_layer3_out, vgg_layer4_out, vgg_layer7_out, num_classes):
     :param num_classes: Number of classes to classify
     :return: The Tensor for the last layer of output
     """
-    conv7_1x1 = tf.layers.conv2d(vgg_layer7_out, num_classes, 1, strides=(1,1))
-    conv4_1x1 = tf.layers.conv2d(vgg_layer4_out, num_classes, 1, strides=(1,1))
-    conv3_1x1 = tf.layers.conv2d(vgg_layer3_out, num_classes, 1, strides=(1,1))
+    conv7_1x1 = tf.layers.conv2d(vgg_layer7_out, num_classes, 1, strides=(1,1),padding='same')
+    conv4_1x1 = tf.layers.conv2d(vgg_layer4_out, num_classes, 1, strides=(1,1),padding='same')
+    conv3_1x1 = tf.layers.conv2d(vgg_layer3_out, num_classes, 1, strides=(1,1),padding='same')
 
-    deconv_output_1 = tf.layers.conv2d_transpose(conv7_1x1, num_classes, 4, strides=(2, 2))
+    deconv_output_1 = tf.layers.conv2d_transpose(conv7_1x1, num_classes, 4, strides=(2, 2),padding='same')
     skip_1 = tf.add(deconv_output_1, conv4_1x1)
 
-    deconv_output_2 = tf.layers.conv2d_transpose(skip_1, num_classes, 4, strides=(2, 2))
+    deconv_output_2 = tf.layers.conv2d_transpose(skip_1, num_classes, 4, strides=(2, 2),padding='same')
     skip_2 = tf.add(deconv_output_2, conv3_1x1)
 
-    deconv_output_3 = tf.layers.conv2d_transpose(skip_2, num_classes, 16, strides=(8, 8))
+    deconv_output_3 = tf.layers.conv2d_transpose(skip_2, num_classes, 16, strides=(8, 8),padding='same')
     return deconv_output_3
 tests.test_layers(layers)
 
