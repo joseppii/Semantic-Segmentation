@@ -103,7 +103,7 @@ def train_nn(sess, epochs, batch_size, get_batches_fn, train_op, cross_entropy_l
     :param keep_prob: TF Placeholder for dropout keep probability
     :param learning_rate: TF Placeholder for learning rate
     """
-    # TODO: Implement function
+    # Implement function
     losses = []
     for epoch in range(epochs):
         loss = None
@@ -138,7 +138,7 @@ def run():
         # OPTIONAL: Augment Images for better results
         #  https://datascience.stackexchange.com/questions/5224/how-to-prepare-augment-images-for-neural-network
 
-        # TODO: Build NN using load_vgg, layers, and optimize function
+        # Build NN using load_vgg, layers, and optimize function
         image_input, keep_prob, layer3_out, layer4_out, layer7_out = load_vgg(sess, vgg_path)
         output_layer = layers(layer3_out, layer4_out, layer7_out, 2)
 
@@ -148,9 +148,9 @@ def run():
         logits, train_opp, cross_entropy_loss = optimize(output_layer, correct_label, learning_rate, 2)  
         sess.run(tf.global_variables_initializer())  
 
-        # TODO: Train NN using the train_nn function
-        train_nn(sess, 10, 8, get_batches_fn, train_opp, cross_entropy_loss, image_input, correct_label, keep_prob, learning_rate)
-        # TODO: Save inference data using helper.save_inference_samples
+        # Train NN using the train_nn function
+        train_nn(sess, 8, 8, get_batches_fn, train_opp, cross_entropy_loss, image_input, correct_label, keep_prob, learning_rate)
+        # Save inference data using helper.save_inference_samples
         helper.save_inference_samples(runs_dir, data_dir, sess, image_shape, logits, keep_prob, image_input)
         # OPTIONAL: Apply the trained model to a video
 
