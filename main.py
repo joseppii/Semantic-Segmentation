@@ -6,7 +6,6 @@ import warnings
 from distutils.version import LooseVersion
 import project_tests as tests
 
-
 # Check TensorFlow Version
 assert LooseVersion(tf.__version__) >= LooseVersion('1.0'), 'Please use TensorFlow version 1.0 or newer.  You are using {}'.format(tf.__version__)
 print('TensorFlow Version: {}'.format(tf.__version__))
@@ -112,8 +111,8 @@ tests.test_train_nn(train_nn)
 def run():
     num_classes = 2
     image_shape = (160, 576)  # KITTI dataset uses 160x576 images
-    data_dir = './data'
-    runs_dir = './runs'
+    data_dir = 'data'
+    runs_dir = 'runs'
     tests.test_for_kitti_dataset(data_dir)
            
     # Download pretrained vgg model
@@ -133,6 +132,8 @@ def run():
         #  https://datascience.stackexchange.com/questions/5224/how-to-prepare-augment-images-for-neural-network
 
         # TODO: Build NN using load_vgg, layers, and optimize function
+        image_input, keep_prob, layer3_out, layer4_out, layer7_out = load_vgg(sess, vgg_path)
+        output_layer = layers(layer3_out, layer4_out, layer7_out, 2)
 
         # TODO: Train NN using the train_nn function
 
