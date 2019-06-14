@@ -141,11 +141,16 @@ def run():
         image_input, keep_prob, layer3_out, layer4_out, layer7_out = load_vgg(sess, vgg_path)
         output_layer = layers(layer3_out, layer4_out, layer7_out, 2)
 
+        correct_label = tf.placeholder(dtype=tf.float32, shape=(None, None, None, 2), name='correct_label')
+        learning_rate = tf.placeholder(dtype=tf.float32, name='learning_rate')
+
+        logits, train_opp, cross_entropy_loss = optimize(output_layer, correct_label, learning_rate, 2)  
+        sess.run(tf.global_variables_initializer())  
+
         # TODO: Train NN using the train_nn function
-
+        train_nn(sess, 10, 8, get_batches_fn, train_opp, cross_entropy_loss, image_input, correct_label, keep_prob, learning_rate)
         # TODO: Save inference data using helper.save_inference_samples
-        #  helper.save_inference_samples(runs_dir, data_dir, sess, image_shape, logits, keep_prob, input_image)
-
+        helper.save_inference_samples(runs_dir, data_dir, sess, image_shape, logits, keep_prob, image_input)
         # OPTIONAL: Apply the trained model to a video
 
 
