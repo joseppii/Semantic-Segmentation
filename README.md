@@ -1,6 +1,30 @@
 # Semantic Segmentation
+
+[//]: # (Image References)
+
+[image1]: ./output_images/oresult.gif "Segmented Images"
+
 ### Introduction
 In this project, you'll label the pixels of a road in images using a Fully Convolutional Network (FCN).
+
+## Requirements
+
+The requirements for this project are the following:
+* Implement the functions: load_vgg, layers, optimize and train_nn
+* On average the model descreases loss over time
+* The number of epochs and and batch size are set to a reasonable number
+* The projects labels at least 80% of  the pixels of roads correctly and 20% of non-road pixels as road.
+
+## Code description
+The contributed code is contained only within main.py. Function `load_vgg` is implemented in lines 20-44. The function loads the pre-trained supplied model and retrieves its graph. From the graph we can obtain the required tensors. In function `layers` (lines 47-67) we used the previously obtained tensors for layers 3,4 and 7, to implement the model described in the lectures, i.e. replacing dense layers with 1x1 convolutions and adding the layers required for the decoder. In function `optimize` (lines 71-87), we implement an adam optimizer. In the `train_nn` function (lines 91-114), we use the modified model along with the optimizer to train the network.
+Finally, the `run` method (lines 118-155) calls the previously implemented functions and  uses some of the supplied helper functions to retrieve and feed the image data in batches. 
+
+## Parameters and results
+
+Several parameters were tested to obtain the best possible result. We started by varying the batch size from 8 to 32. The optimal size, given our hardware restrictions (8GB RAM) was found to be 8. Initially, we followed the advise in the q&a, for using a kernel_regularizer but it was found that a kernel_initializer was also required for better results. By varying the stddev parameter we were able to obtain better results when this was set to 1e-3 for the kernel-regularizer and 1e-2 for the kernel-initializer.
+Next, we varied the learning rate from 1e-3 to 1e-5 along with the number of epochs. We obtained best results when learning rate was set to 1e-5 for 40 epochs and keep probability set to 0.6. The result can be ssen in the image below:
+
+![alt text][image1]
 
 ### Setup
 ##### GPU
